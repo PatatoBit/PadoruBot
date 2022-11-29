@@ -1,9 +1,11 @@
 import { dirname, importx } from "@discordx/importer";
-import type { Interaction, Message } from "discord.js";
+import type { Interaction, Message, TextChannel } from "discord.js";
 import { IntentsBitField } from "discord.js";
 import { Client } from "discordx";
 
 import dotenv from "dotenv";
+import { CronJob } from "cron";
+import getPadoru from "./lib/padoru.js";
 
 dotenv.config();
 
@@ -30,19 +32,28 @@ export const bot = new Client({
 });
 
 bot.once("ready", async () => {
-  // Make sure all guilds are cached
-  // await bot.guilds.fetch();
-
-  // Synchronize applications commands with Discord
   await bot.initApplicationCommands();
 
-  // To clear all guild commands, uncomment this line,
-  // This is useful when moving from guild commands to global commands
-  // It must only be executed once
-  //
-  //  await bot.clearApplicationCommands(
-  //    ...bot.guilds.cache.map((g) => g.id)
-  //  );
+  const job = new CronJob(
+    "0 * * * *",
+    async function () {
+      const channel = bot.channels.cache.get(
+        process.env.CHANNEL_ID!
+      ) as TextChannel;
+
+      const { data, status } = await getPadoru();
+      console.log(
+        "Hashire sori yo kaze no you ni tsukimihara wo Padoru Padoru",
+        status
+      );
+      channel?.send(
+        data.results[Math.floor(Math.random() * 50)].media[0].gif.url
+      );
+    },
+    null,
+    true,
+    "America/Los_Angeles"
+  );
 
   console.log("Bot started");
 });
