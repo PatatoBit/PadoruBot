@@ -1,6 +1,6 @@
 import { dirname, importx } from "@discordx/importer";
 import type { Interaction, Message, TextChannel } from "discord.js";
-import { IntentsBitField } from "discord.js";
+import { IntentsBitField, ActivityType } from "discord.js";
 import { Client } from "discordx";
 
 import dotenv from "dotenv";
@@ -55,7 +55,25 @@ bot.once("ready", async () => {
     "America/Los_Angeles"
   );
 
-  console.log("Bot started");
+  console.log(`Logged in as ${bot.user?.tag}`);
+
+  // Set bot activity
+  bot.user?.setActivity(
+    "Hashire sori yo kaze no you ni tsukimihara wo Padoru Padoru",
+    {
+      type: ActivityType.Listening,
+    }
+  );
+
+  // Refreshes bot status
+  setInterval(() => {
+    bot.user?.setActivity(
+      "Hashire sori yo kaze no you ni tsukimihara wo Padoru Padoru",
+      {
+        type: ActivityType.Listening,
+      }
+    );
+  }, 3600000);
 });
 
 bot.on("interactionCreate", (interaction: Interaction) => {
