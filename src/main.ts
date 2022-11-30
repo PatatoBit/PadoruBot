@@ -6,6 +6,7 @@ import { Client } from "discordx";
 import dotenv from "dotenv";
 import { CronJob } from "cron";
 import getPadoru from "./lib/padoru.js";
+import cron from "./lib/cron.js";
 
 dotenv.config();
 
@@ -34,26 +35,7 @@ export const bot = new Client({
 bot.once("ready", async () => {
   await bot.initApplicationCommands();
 
-  const job = new CronJob(
-    "0 * * * *",
-    async function () {
-      const channel = bot.channels.cache.get(
-        process.env.CHANNEL_ID!
-      ) as TextChannel;
-
-      const { data, status } = await getPadoru();
-      console.log(
-        "Hashire sori yo kaze no you ni tsukimihara wo Padoru Padoru",
-        status
-      );
-      channel?.send(
-        data.results[Math.floor(Math.random() * 50)].media[0].gif.url
-      );
-    },
-    null,
-    true,
-    "America/Los_Angeles"
-  );
+  const job = new CronJob("0 * * * *", cron, null, true, "America/Los_Angeles");
 
   console.log(`Logged in as ${bot.user?.tag}`);
 
