@@ -13,7 +13,7 @@ export class General {
     const { data, status } = await getPadoru();
 
     await interaction.reply(
-      data.results[Math.floor(Math.random() * 50)].media[0].gif.url
+      data.results[Math.floor(Math.random() * 10)].media[0].gif.url
     );
   }
 }
