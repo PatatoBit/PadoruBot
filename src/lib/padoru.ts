@@ -14,7 +14,7 @@ type Results = {
 
 export default async function getPadoru() {
   const res = await axios.get<Results>(
-    `https://g.tenor.com/v1/random?q=padoru&key=LIVDSRZULELA&limit=10&media_filter=minimal`
+    `https://g.tenor.com/v1/random?q=padoru&key=LIVDSRZULELA&limit=50&media_filter=minimal`
   );
 
   return await res;
